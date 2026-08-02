@@ -14,6 +14,7 @@ import com.example.gymmembershipsystem.models.Attendance;
 import com.example.gymmembershipsystem.models.Payment;
 
 import java.util.List;
+import com.example.gymmembershipsystem.utils.BottomNavHelper;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -62,6 +63,8 @@ public class DashboardActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+
+            BottomNavHelper.setup(this, BottomNavHelper.TAB_HOME);
         });
     }
 

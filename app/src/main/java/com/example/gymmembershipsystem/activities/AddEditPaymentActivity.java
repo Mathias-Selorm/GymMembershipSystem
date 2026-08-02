@@ -3,12 +3,12 @@ package com.example.gymmembershipsystem.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.gymmembershipsystem.R;
 import com.example.gymmembershipsystem.database.DatabaseHelper;
@@ -22,7 +22,8 @@ public class AddEditPaymentActivity extends AppCompatActivity {
 
     private Spinner spinnerMember, spinnerMethod;
     private EditText editAmount, editPaymentDate;
-    private Button btnSavePayment;
+    private AppCompatButton btnSavePayment;
+    private android.widget.TextView btnBack;
 
     private DatabaseHelper dbHelper;
     private List<Member> memberList;
@@ -36,11 +37,14 @@ public class AddEditPaymentActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
+        btnBack = findViewById(R.id.btnBack);
         spinnerMember = findViewById(R.id.spinnerMember);
         spinnerMethod = findViewById(R.id.spinnerMethod);
         editAmount = findViewById(R.id.editAmount);
         editPaymentDate = findViewById(R.id.editPaymentDate);
         btnSavePayment = findViewById(R.id.btnSavePayment);
+
+        btnBack.setOnClickListener(v -> finish());
 
         setupMemberSpinner();
         setupMethodSpinner();
@@ -57,15 +61,15 @@ public class AddEditPaymentActivity extends AppCompatActivity {
             names[i] = memberList.get(i).getName();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, names);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_item, names);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerMember.setAdapter(adapter);
     }
 
     private void setupMethodSpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, PAYMENT_METHODS);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_item, PAYMENT_METHODS);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerMethod.setAdapter(adapter);
     }
 
@@ -86,7 +90,6 @@ public class AddEditPaymentActivity extends AppCompatActivity {
         String amountStr = editAmount.getText().toString().trim();
         String date = editPaymentDate.getText().toString().trim();
 
-        // ---- Validation ----
         if (memberList.isEmpty()) {
             Toast.makeText(this, "No members available", Toast.LENGTH_SHORT).show();
             return;

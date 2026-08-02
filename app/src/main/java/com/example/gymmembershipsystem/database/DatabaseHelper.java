@@ -160,6 +160,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public int getMemberCountByPlanId(int planId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_MEMBERS + " WHERE plan_id=?",
+                new String[]{String.valueOf(planId)});
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return count;
+    }
+
     public List<Member> getAllMembers() {
         List<Member> members = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

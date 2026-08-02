@@ -3,7 +3,6 @@ package com.example.gymmembershipsystem.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +21,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     }
 
     private List<Payment> paymentList;
-    private final List<Member> memberList; // used to resolve member names
+    private final List<Member> memberList;
     private final OnPaymentActionListener listener;
 
     public PaymentAdapter(List<Payment> paymentList, List<Member> memberList, OnPaymentActionListener listener) {
@@ -55,9 +54,9 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     public void onBindViewHolder(@NonNull PaymentViewHolder holder, int position) {
         Payment payment = paymentList.get(position);
         holder.tvPaymentMember.setText(resolveMemberName(payment.getMemberId()));
-        holder.tvPaymentAmount.setText("Amount: GHS " + payment.getAmount());
-        holder.tvPaymentDate.setText("Date: " + payment.getPaymentDate());
-        holder.tvPaymentMethod.setText("Method: " + payment.getMethod());
+        holder.tvPaymentAmount.setText("GHS " + payment.getAmount());
+        holder.tvPaymentDate.setText(payment.getPaymentDate());
+        holder.tvPaymentMethod.setText(payment.getMethod().toUpperCase());
 
         holder.btnDeletePayment.setOnClickListener(v -> listener.onDelete(payment));
     }
@@ -68,8 +67,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     }
 
     static class PaymentViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPaymentMember, tvPaymentAmount, tvPaymentDate, tvPaymentMethod;
-        Button btnDeletePayment;
+        TextView tvPaymentMember, tvPaymentAmount, tvPaymentDate, tvPaymentMethod, btnDeletePayment;
 
         public PaymentViewHolder(@NonNull View itemView) {
             super(itemView);

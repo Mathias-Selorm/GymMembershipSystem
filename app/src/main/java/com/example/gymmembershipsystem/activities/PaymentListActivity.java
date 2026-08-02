@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +16,15 @@ import com.example.gymmembershipsystem.adapters.PaymentAdapter;
 import com.example.gymmembershipsystem.database.DatabaseHelper;
 import com.example.gymmembershipsystem.models.Member;
 import com.example.gymmembershipsystem.models.Payment;
+import com.example.gymmembershipsystem.utils.BottomNavHelper;
 
 import java.util.List;
 
 public class PaymentListActivity extends AppCompatActivity implements PaymentAdapter.OnPaymentActionListener {
 
     private RecyclerView recyclerPayments;
-    private TextView tvEmptyPayments;
-    private Button btnAddPayment;
+    private TextView tvEmptyPayments, tvTotalCollected, tvPaymentCount;
+    private View btnAddPayment, btnBack;
 
     private DatabaseHelper dbHelper;
     private PaymentAdapter adapter;
@@ -40,11 +40,16 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentAda
 
         recyclerPayments = findViewById(R.id.recyclerPayments);
         tvEmptyPayments = findViewById(R.id.tvEmptyPayments);
+        tvTotalCollected = findViewById(R.id.tvTotalCollected);
+        tvPaymentCount = findViewById(R.id.tvPaymentCount);
         btnAddPayment = findViewById(R.id.btnAddPayment);
+        btnBack = findViewById(R.id.btnBack);
 
         recyclerPayments.setLayoutManager(new LinearLayoutManager(this));
 
         loadPayments();
+
+        btnBack.setOnClickListener(v -> finish());
 
         btnAddPayment.setOnClickListener(v -> {
             if (dbHelper.getAllMembers().isEmpty()) {
@@ -53,6 +58,8 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentAda
             }
             startActivity(new Intent(PaymentListActivity.this, AddEditPaymentActivity.class));
         });
+
+        BottomNavHelper.setup(this, BottomNavHelper.TAB_PAYMENTS);
     }
 
     @Override
@@ -73,6 +80,13 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentAda
         }
 
         tvEmptyPayments.setVisibility(paymentList.isEmpty() ? View.VISIBLE : View.GONE);
+
+        double total = 0;
+        for (Payment p : paymentList) {
+            total += p.getAmount();
+        }
+        tvTotalCollected.setText(String.format("GHS %.0f", total));
+        tvPaymentCount.setText(String.valueOf(paymentList.size()));
     }
 
     @Override
