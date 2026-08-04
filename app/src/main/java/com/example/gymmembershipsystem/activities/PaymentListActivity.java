@@ -16,7 +16,6 @@ import com.example.gymmembershipsystem.adapters.PaymentAdapter;
 import com.example.gymmembershipsystem.database.DatabaseHelper;
 import com.example.gymmembershipsystem.models.Member;
 import com.example.gymmembershipsystem.models.Payment;
-import com.example.gymmembershipsystem.utils.BottomNavHelper;
 
 import java.util.List;
 
@@ -58,8 +57,6 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentAda
             }
             startActivity(new Intent(PaymentListActivity.this, AddEditPaymentActivity.class));
         });
-
-        BottomNavHelper.setup(this, BottomNavHelper.TAB_PAYMENTS);
     }
 
     @Override
